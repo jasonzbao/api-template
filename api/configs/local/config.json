@@ -1,0 +1,4 @@
+{
+    "db_connection_main": "postgres://api_user:api_user@db:5432/api",
+    "allowed_origins": ["*"]
+}

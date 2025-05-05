@@ -1,0 +1,4 @@
+CREATE TABLE key_values (
+    "key" VARCHAR(255) NOT NULL PRIMARY KEY,
+    "value" VARCHAR(255) NOT NULL
+);
