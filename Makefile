@@ -13,7 +13,7 @@ deploy: docker_build docker_push
 	if [ $(SKIP_MIGRATE) = 0 ]; then\
 		make migrate ENV=$(ENV);\
 	fi
-	ecs deploy $(ENV)-gcc $(ENV)-api -e api VERSION $(shell git rev-parse --short HEAD) --timeout ${TIMEOUT} --user "$(shell id -F)"
+	ecs deploy $(ENV)-gcc $(ENV)-api -e api VERSION $(shell git rev-parse --short HEAD) --timeout ${TIMEOUT} --user "$(shell id -un)"
 
 migrate:
 	ifeq ($(ENV), prod)
