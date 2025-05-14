@@ -1,5 +1,5 @@
 docker_build:
-	docker buildx build --platform linux/arm64 -t api -f docker/Dockerfile .
+	docker buildx build --platform linux/arm64 -t api -f docker/api/Dockerfile .
 
 docker_push:
 	@bash ./scripts/docker_push.sh -e $(ENV) -a $(AWS_ACCOUNT_ID)
