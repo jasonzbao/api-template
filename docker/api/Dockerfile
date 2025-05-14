@@ -23,7 +23,7 @@ RUN apk add --no-cache tini
 
 COPY --from=build /usr/src/cmd /usr
 COPY ../../scripts/docker_exec.sh /usr
-COPY ../../api/configs /usr/configs
+COPY ../../configs /usr/configs
 
 WORKDIR /usr
 RUN chmod +x docker_exec.sh
