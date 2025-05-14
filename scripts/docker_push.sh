@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-while getopts "e:s:" opt; do
+while getopts "e:a:s:" opt; do
     case "$opt" in
         e) env=${OPTARG};;
         a) aws_account_id=${OPTARG};;
