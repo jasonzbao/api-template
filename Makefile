@@ -8,22 +8,20 @@ docker_push:
 	@bash ./scripts/docker_push.sh -e $(ENV) -a $(AWS_ACCOUNT_ID)
 
 TIMEOUT ?= 300
-SKIP_MIGRATE ?= 0
 deploy: docker_build docker_push
-	if [ $(SKIP_MIGRATE) = 0 ]; then\
-		make migrate ENV=$(ENV);\
-	fi
-	ecs deploy $(ENV)-gcc $(ENV)-api -e api VERSION $(shell git rev-parse --short HEAD) --timeout ${TIMEOUT} --user "$(shell id -un)"
-
-migrate:
+	DB_URI_FOR_ECS=""; \
 	if [ "$(ENV)" = "prod" ]; then \
-		migrate -database "$(PROD_DB_URI)" -path db/migrations up; \
+		DB_URI_FOR_ECS="$(PROD_DB_URI)"; \
 	elif [ "$(ENV)" = "dev" ]; then \
-		migrate -database "$(DEV_DB_URI)" -path db/migrations up; \
+		DB_URI_FOR_ECS="$(DEV_DB_URI)"; \
 	else \
-		@echo "Error: Unsupported ENV value '$(ENV)'. Please set ENV to 'prod' or 'dev'."; \
+		echo "Error: Unsupported ENV value '$(ENV)' for DB_URI. Please set ENV to 'prod' or 'dev'." >&2; \
 		exit 1; \
-	fi
+	fi; \
+	ecs deploy $(ENV)-main $(ENV)-api \
+		-e api VERSION $(shell git rev-parse --short HEAD) \
+		-e api DB_URI "$${DB_URI_FOR_ECS}" \
+		--timeout ${TIMEOUT} --user "$(shell id -un)"
 
 migrate_generate:
 	migrate create -ext sql -dir db/migrations -seq $(NAME)
