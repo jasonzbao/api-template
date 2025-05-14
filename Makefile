@@ -16,14 +16,14 @@ deploy: docker_build docker_push
 	ecs deploy $(ENV)-gcc $(ENV)-api -e api VERSION $(shell git rev-parse --short HEAD) --timeout ${TIMEOUT} --user "$(shell id -un)"
 
 migrate:
-	ifeq ($(ENV), prod)
-		migrate -database "$(PROD_DB_URI)" -path db/migrations up
-	else ifeq ($(ENV), dev)
-		migrate -database "$(DEV_DB_URI)" -path db/migrations up
-	else
-		@echo "Error: Unsupported ENV value '$(ENV)'. Please set ENV to 'prod' or 'dev'."
-		@exit 1
-	endif
+	if [ "$(ENV)" = "prod" ]; then \
+		migrate -database "$(PROD_DB_URI)" -path db/migrations up; \
+	elif [ "$(ENV)" = "dev" ]; then \
+		migrate -database "$(DEV_DB_URI)" -path db/migrations up; \
+	else \
+		@echo "Error: Unsupported ENV value '$(ENV)'. Please set ENV to 'prod' or 'dev'."; \
+		exit 1; \
+	fi
 
 migrate_generate:
 	migrate create -ext sql -dir db/migrations -seq $(NAME)
