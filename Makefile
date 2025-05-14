@@ -8,6 +8,7 @@ docker_push:
 	@bash ./scripts/docker_push.sh -e $(ENV) -a $(AWS_ACCOUNT_ID)
 
 TIMEOUT ?= 300
+SKIP_MIGRATE ?= 0
 deploy: docker_build docker_push
 	if [ $(SKIP_MIGRATE) = 0 ]; then\
 		make migrate ENV=$(ENV);\
