@@ -7,6 +7,7 @@ import (
 
 func (s *Server) addPingRoutes(router *gin.Engine) {
 	router.Any("/ping", s.handlePing)
+	router.Any("/public/ping", s.handlePing)
 }
 
 func (s *Server) handlePing(c *gin.Context) {
