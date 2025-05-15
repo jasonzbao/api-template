@@ -1,4 +1,5 @@
 #!/bin/sh
+set -x
 
 /usr/local/bin/migrate -database ${DB_URI} -path db/migrations up
 
