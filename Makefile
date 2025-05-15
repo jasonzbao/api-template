@@ -19,6 +19,7 @@ deploy: docker_build docker_push
 		exit 1; \
 	fi; \
 	ecs deploy $(ENV)-main $(ENV)-api \
+		--region us-west-2 \
 		-e api VERSION $(shell git rev-parse --short HEAD) \
 		-e api DB_URI "$${DB_URI_FOR_ECS}" \
 		--timeout ${TIMEOUT} --user "$(shell id -un)"

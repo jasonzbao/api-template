@@ -12,7 +12,7 @@ COPY ../../Makefile /usr/src
 
 RUN GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -tags jsoniter -o cmd api/cmd/main.go
 
-FROM golang:1.24 as migrate_builder
+FROM golang:1.24 AS migrate_builder
 
 ARG MIGRATE_VERSION=v4.18.0
 ENV CGO_ENABLED=0
